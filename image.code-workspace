@@ -1,0 +1,14 @@
+{
+  "folders": [
+    {
+      "path": "."
+    },
+    {
+      "path": "apps/nodejs-app"
+    },
+    {
+      "path": "apps/web-app"
+    }
+  ],
+  "settings": {}
+}

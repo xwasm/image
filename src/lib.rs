@@ -64,15 +64,15 @@ impl Image {
         self.0.height()
     }
 
-    pub fn save(&self, path: String) -> Result<(), JsError> {
-        self.0.save(path).map_err(|err| err.into())
-    }
+    // pub fn save(&self, path: String) -> Result<(), JsError> {
+    //     self.0.save(path).map_err(|err| err.into())
+    // }
 
-    pub fn save_with_format(&self, path: String) -> Result<(), JsError> {
-        self.0
-            .save_with_format(path, image::ImageFormat::Png)
-            .map_err(|err| err.into())
-    }
+    // pub fn save_with_format(&self, path: String) -> Result<(), JsError> {
+    //     self.0
+    //         .save_with_format(path, image::ImageFormat::Png)
+    //         .map_err(|err| err.into())
+    // }
 
     pub fn blur(&self, sigma: f32) -> Self {
         Image(self.0.blur(sigma))

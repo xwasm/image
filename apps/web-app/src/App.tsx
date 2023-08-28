@@ -1,28 +1,29 @@
-import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useState, useCallback } from 'react'
 import selectFile from './utils/selectFile'
-import initImageWasm, { Image } from 'image-wasm'
+import { Image as ImageWasm } from '../../../pkg'
 import './app.css'
 
 function App() {
-  const [loading, setLoading] = useState(true)
-  const [hasErr, setHasErr] = useState(false)
-  const [imageUrl, setImageUrl] = useState(null)
-  const [imageFile, setImageFile] = useState(null)
-  const [imageBuffer, setImageBuffer] = useState<ArrayBuffer>(null)
+  const [imageUrl, setImageUrl] = useState<string | undefined>(undefined)
+  const [imageFile, setImageFile] = useState<File | null>(null)
+  const [imageBuffer, setImageBuffer] = useState<ArrayBuffer | null>(null)
   const [saveImageType, setSaveImageType] = useState('png')
   const [blur, setBlur] = useState(0)
   const [brighten, setBrighten] = useState(0)
-  const [imageUrl2, setImageUrl2] = useState(null)
-  const [image2, setImage2] = useState(null)
+  const [imageUrl2, setImageUrl2] = useState<string | undefined>(undefined)
+  const [image2, setImage2] = useState<ImageWasm | null>(null)
 
   const abToImage = useCallback(
     (ab: ArrayBuffer) => {
+      if (!imageFile) {
+        throw new Error('File not exist')
+      }
       if (imageFile.type === 'image/png') {
-        return Image.from_png(new Uint8Array(ab))
+        return ImageWasm.from_png(new Uint8Array(ab))
       } else if (imageFile.type === 'image/jpeg') {
-        return Image.from_jpeg(new Uint8Array(ab))
+        return ImageWasm.from_jpeg(new Uint8Array(ab))
       } else if (imageFile.type === 'image/bmp') {
-        return Image.from_bmp(new Uint8Array(ab))
+        return ImageWasm.from_bmp(new Uint8Array(ab))
       }
     },
     [imageFile]
@@ -49,7 +50,7 @@ function App() {
       window.open(URL.createObjectURL(new Blob([image2.to_png()], { type: 'image/png' })))
     } else if (saveImageType === 'jpeg') {
       window.open(URL.createObjectURL(new Blob([image2.to_jpeg()], { type: 'image/jpeg' })))
-    } else if ($fileType.value === 'bmp') {
+    } else if (saveImageType === 'bmp') {
       window.open(URL.createObjectURL(new Blob([image2.to_bmp()], { type: 'image/bmp' })))
     }
   }, [image2, saveImageType])
@@ -58,35 +59,24 @@ function App() {
     if (!imageBuffer) {
       return
     }
+    
     let image = abToImage(imageBuffer)
+
+    if (!image) {
+      return
+    }
+
+    console.time()
     if (blur) {
       image = image.blur(blur)
     }
-    if (brighten) {
-      image = image.brighten(brighten)
-    }
+    console.timeEnd()
+    // if (brighten) {
+    //   image = image.brighten(brighten)
+    // }
     setImageUrl2(URL.createObjectURL(new Blob([image.to_png()], { type: 'image/png' })))
     setImage2(image)
-  }, [imageBuffer, blur, brighten, abToImage])
-
-  useEffect(() => {
-    initImageWasm()
-      .catch(err => {
-        setHasErr(true)
-        throw err
-      })
-      .finally(() => {
-        setLoading(false)
-      })
-  }, [])
-
-  if (loading) {
-    return <div>loading...</div>
-  }
-
-  if (hasErr) {
-    return <div>页面加载失败</div>
-  }
+  }, [imageBuffer, blur, abToImage])
 
   return (
     <>
@@ -118,7 +108,14 @@ function App() {
               <div>{blur}</div>
               blur:
               <span>0</span>
-              <input type="range" value={blur} min={0} max={10} step={0.5} onChange={e => setBlur(e.target.value)} />
+              <input
+                type="range"
+                value={blur}
+                min={0}
+                max={10}
+                step={0.5}
+                onChange={e => setBlur(e.target.value as unknown as number)}
+              />
               <span>10</span>
             </div>
             <div className="slider">
@@ -131,7 +128,7 @@ function App() {
                 min={-100}
                 max={100}
                 step={1}
-                onChange={e => setBrighten(e.target.value)}
+                onChange={e => setBrighten(e.target.value as unknown as number)}
               />
               <span>100</span>
             </div>
