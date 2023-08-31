@@ -1,6 +1,6 @@
 const fs = require('fs')
 const path = require('path')
-const { Image } = require('../../../pkg-nodejs')
+const { Image } = require('../../../pkg')
 
 const buffer = fs.readFileSync(path.join(__dirname, '../../../image.jpg'))
 
