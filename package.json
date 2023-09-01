@@ -1,0 +1,26 @@
+{
+  "name": "@wasm-dev/image",
+  "version": "0.0.1",
+  "type": "module",
+  "main": "pkg/image.js",
+  "module": "pkg/image.js",
+  "types": "pkg/image.d.ts",
+  "collaborators": [
+    "nashaofu <diaocheng@outlook.com>"
+  ],
+  "description": "A WebAssembly wrapper for image-rs",
+  "license": "SEE LICENSE IN LICENSE",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wasm-dev/image.git"
+  },
+  "files": [
+    "pkg",
+    "LICENSE",
+    "README.md"
+  ],
+  "sideEffects": [
+    "./pkg/image.js",
+    "./pkg/snippets/*"
+  ]
+}

@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
 import selectFile from './utils/selectFile'
-import { Image as ImageWasm } from '../../../pkg'
+import { ImageWasm } from '@wasm-dev/image'
 import './app.css'
 
 function App() {
@@ -59,7 +59,7 @@ function App() {
     if (!imageBuffer) {
       return
     }
-    
+
     let image = abToImage(imageBuffer)
 
     if (!image) {

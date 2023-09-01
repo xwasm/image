@@ -1,1 +1,1 @@
-wasm-pack build --scope wasm-dev --release --out-name image
+wasm-pack build --scope wasm-dev --release --out-name image --out-dir pkg --no-pack

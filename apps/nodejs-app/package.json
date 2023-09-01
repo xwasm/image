@@ -4,9 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "test": "node --experimental-wasm-modules src/index.js"
+    "test": "node --experimental-specifier-resolution=node --experimental-wasm-modules src/index.js"
   },
   "dependencies": {
-    "@napi-rs/image": "^1.6.1"
+    "@napi-rs/image": "^1.6.1",
+    "@wasm-dev/image": "workspace:*"
   }
 }

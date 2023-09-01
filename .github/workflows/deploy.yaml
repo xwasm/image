@@ -5,6 +5,10 @@ on:
     branches:
       - master
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   deploy:
     name: Deploy
@@ -28,22 +32,28 @@ jobs:
       - name: Install wasm-pack
         run: cargo install wasm-pack
 
-      - name: Build wasm for Nodejs
-        run: wasm-pack build --scope wasm-dev --release --out-name image --target nodejs
+      - name: Build wasm
+        run: wasm-pack build --scope wasm-dev --release --out-name image --out-dir pkg --no-pack
 
       - name: Setup Node
         uses: actions/setup-node@v1
         with:
           node-version: 18.x
 
-      # - name: Build wasm for Web
-      #   run: wasm-pack build --scope wasm-dev --release --out-name image
-      # - name: Install nodejs-app dependencies & Test
-      #   run: yarn && yarn test
-      #   working-directory: apps/nodejs-app
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: latest
 
-      - name: Install web-app dependencies & Build
-        run: yarn && yarn build
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Test nodejs-app
+        run: pnpm run test
+        working-directory: apps/nodejs-app
+
+      - name: Build web-app
+        run: pnpm run build
         working-directory: apps/web-app
 
       - name: Deploy Docs
