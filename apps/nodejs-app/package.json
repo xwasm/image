@@ -2,7 +2,11 @@
   "name": "nodejs-app",
   "private": true,
   "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --experimental-wasm-modules src/index.js"
+  },
+  "dependencies": {
+    "@napi-rs/image": "^1.6.1"
   }
 }

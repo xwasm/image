@@ -28,15 +28,21 @@ jobs:
       - name: Install wasm-pack
         run: cargo install wasm-pack
 
-      - name: Build wasm
-        run: wasm-pack build --target web --release
+      - name: Build wasm for Nodejs
+        run: wasm-pack build --scope wasm-dev --release --out-name image --target nodejs
 
       - name: Setup Node
         uses: actions/setup-node@v1
         with:
           node-version: 18.x
 
-      - name: Install Dependencies & Build
+      # - name: Build wasm for Web
+      #   run: wasm-pack build --scope wasm-dev --release --out-name image
+      # - name: Install nodejs-app dependencies & Test
+      #   run: yarn && yarn test
+      #   working-directory: apps/nodejs-app
+
+      - name: Install web-app dependencies & Build
         run: yarn && yarn build
         working-directory: apps/web-app
 

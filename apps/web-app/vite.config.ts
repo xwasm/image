@@ -6,7 +6,7 @@ import wasm from 'vite-plugin-wasm'
 const pkgDir = path.join(__dirname, '../../pkg')
 
 export default defineConfig({
-  base: '/image-wasm',
+  base: '/image',
   server: {
     fs: {
       allow: ['.', pkgDir]

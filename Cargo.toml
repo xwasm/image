@@ -1,8 +1,11 @@
 [package]
-name = "image-wasm"
+name = "wasm-dev-image"
 version = "0.1.0"
 authors = ["nashaofu <diaocheng@outlook.com>"]
 edition = "2018"
+description = "A WebAssembly wrapper for image-rs"
+repository = "https://github.com/wasm-dev/image.git"
+license-file = "LICENSE"
 
 [lib]
 crate-type = ["cdylib", "rlib"]
